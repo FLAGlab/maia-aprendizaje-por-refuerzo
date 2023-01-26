@@ -16,8 +16,8 @@ class Environment:
         self.rewards = [[0]*n]*n
         self.rewards[5][5] = 1
         self.rewards[4][5] = -1
-        self.rewards[5][7] = -1
-        self.rewards[5][8] = -1
+        self.rewards[7][5] = -1
+        self.rewards[7][6] = -1
     
     def get_current_state(self):
         """
@@ -33,7 +33,7 @@ class Environment:
           a terminal state.
         """
         actions = ()
-        if state[0] > 0:
+        if state[0] > 0 or self.board[state[0] + 1][state[1]]:
           actions += ('up', )
         if state[0] < self.dimensions -1:
           actions += ('down', )

@@ -33,13 +33,13 @@ class Environment:
           a terminal state.
         """
         actions = ()
-        if state[0] > 0 or self.board[state[0] + 1][state[1]]:
+        if state[0] > 0 and self.board[state[0]+1][state[1]]:
           actions += ('up', )
-        if state[0] < self.dimensions -1:
+        if state[0] < self.dimensions - 1 and self.board[state[0]-1][state[1]]:
           actions += ('down', )
-        if state[1] > 0:
+        if state[1] > 0 and self.board[state[0]][state[1]+1]:
           actions += ('left', )
-        if state[1] < self.dimensions -1:
+        if state[1] < self.dimensions - 1 and self.board[state[0]][state[1]-1]:
           actions += ('right', )
         return actions
 

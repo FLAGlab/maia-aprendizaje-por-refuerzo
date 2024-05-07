@@ -1,19 +1,20 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-class Gridworld:
+#Environment class defining gridworld
+class Environment: 
     def __init__(self, board):
         self.nrows, self.ncols = len(board),len(board[0])
-        self.grid = [[0 for _ in range(self.ncols)] for _ in range(self.nrows)]
+        self.states = [[0 for _ in range(self.ncols)] for _ in range(self.nrows)]
         self.initial_state = None
         for i in range(len(board)):
             for j in range(len(board[0])):
                 if board[i][j] == 'S':
                     self.initial_state = (i,j)
                 elif board[i][j] == "#":
-                    self.grid[i][j] = None
+                    self.states[i][j] = None
                 elif board[i][j] != ' ':
-                    self.grid[i][j] = int(board[i][j])
+                    self.states[i][j] = int(board[i][j])
         self.state = self.initial_state
         self.actions = ['left', 'right', 'up', 'down']
         
@@ -34,15 +35,15 @@ class Gridworld:
         reward = 0
         done = False
         if self.is_terminal(state):
-            reward = self.grid[i][j]
+            reward = self.states[i][j]
             done = True
-        elif action == 'left' and j > 0 and self.grid[i][j-1] != None:
+        elif action == 'left' and j > 0 and self.states[i][j-1] != None:
             j -= 1
-        elif action == 'right' and j < self.ncols - 1 and self.grid[i][j+1] != None:
+        elif action == 'right' and j < self.ncols - 1 and self.states[i][j+1] != None:
             j += 1
-        elif action == 'down' and i < self.nrows -1 and self.grid[i+1][j] != None:
+        elif action == 'down' and i < self.nrows -1 and self.states[i+1][j] != None:
             i += 1
-        elif action == 'up' and i > 0 and self.grid[i-1][j] != None:
+        elif action == 'up' and i > 0 and self.states[i-1][j] != None:
             i -= 1
         self.state = (i, j)
         return reward, self.state, done
@@ -54,36 +55,36 @@ class Gridworld:
         self.state = self.initial_state
 
     def is_terminal(self, state):
-        return self.grid[state[0]][state[1]] != 0 and self.grid[state[0]][state[1]] != None
+        return self.states[state[0]][state[1]] != 0 and self.states[state[0]][state[1]] != None
     
     def plot(self):
         fig1 = plt.figure(figsize=(10, 10))
         ax1 = fig1.add_subplot(111, aspect='equal')
         
         # Lineas
-        for i in range(0, len(self.grid)+1):
+        for i in range(0, len(self.states)+1):
             ax1.axhline(i , linewidth=2, color="#2D2D33")
-        for i in range(len(self.grid[0])+1):
+        for i in range(len(self.states[0])+1):
             ax1.axvline(i , linewidth=2, color="#2D2D33")
         
         # Amarillo - inicio
         (i,j)  = self.initial_state
         ax1.add_patch(patches.Rectangle((j, self.nrows - i -1), 1, 1, facecolor = "#F6D924"))
-        for j in range(len(self.grid[0])):
-            for i in range(len(self.grid)):
-                if self.grid[i][j] == 1: # verde
+        for j in range(len(self.states[0])):
+            for i in range(len(self.states)):
+                if self.states[i][j] == 1: # verde
                     ax1.add_patch(patches.Rectangle((j,self.nrows - i -1), 1, 1, facecolor = "#68FF33"))
-                if self.grid[i][j] == None: # gris
+                if self.states[i][j] == None: # gris
                     ax1.add_patch(patches.Rectangle((j,self.nrows - i -1), 1, 1, facecolor = "#6c7780"))
-                if self.grid[i][j] == -1: # rojo
+                if self.states[i][j] == -1: # rojo
                     ax1.add_patch(patches.Rectangle((j,self.nrows - i -1), 1, 1, facecolor = "#cc0000"))
         #plt.scatter(self.ncols - self.state[1] - 1 + 0.5, self.nrows - self.state[0] - 1 +0.5, s = 100, color = "black", marker = "o", facecolor = "blue", edgecolors = "blue", zorder = 10)
-        for i in range(len(self.grid)):
-            for j in range(len(self.grid[0])):
-                if self.grid[i][j] == None:
+        for i in range(len(self.states)):
+            for j in range(len(self.states[0])):
+                if self.states[i][j] == None:
                     ax1.text(self.ncols-j-1, self.nrows-i-1, "", ha='center', va='center')
                 else:
-                    ax1.text(j+0.5, self.nrows-i-1+0.5, str(round(self.grid[i][j],2)), ha='center', va='center')
+                    ax1.text(j+0.5, self.nrows-i-1+0.5, str(round(self.states[i][j],2)), ha='center', va='center')
         plt.axis("off")
         plt.show()
 
@@ -104,27 +105,27 @@ class Gridworld:
         ax1 = fig1.add_subplot(111, aspect='equal')
         
         # Lineas
-        for i in range(0, len(self.grid)+1):
+        for i in range(0, len(self.states)+1):
             ax1.axhline(i , linewidth=2, color="#2D2D33")
-        for i in range(len(self.grid[0])+1):
+        for i in range(len(self.states[0])+1):
             ax1.axvline(i , linewidth=2, color="#2D2D33")
         
         # Amarillo - inicio
         (i,j)  = self.initial_state
         ax1.add_patch(patches.Rectangle((j, self.nrows - i -1), 1, 1, facecolor = "#F6D924"))
-        for j in range(len(self.grid[0])):
-            for i in range(len(self.grid)):
-                if self.grid[i][j] == 1: # verde
+        for j in range(len(self.states[0])):
+            for i in range(len(self.states)):
+                if self.states[i][j] == 1: # verde
                     ax1.add_patch(patches.Rectangle((j,self.nrows - i -1), 1, 1, facecolor = "#68FF33"))
-                if self.grid[i][j] == None: # gris
+                if self.states[i][j] == None: # gris
                     ax1.add_patch(patches.Rectangle((j,self.nrows - i -1), 1, 1, facecolor = "#6c7780"))
-                if self.grid[i][j] == -1: # rojo
+                if self.states[i][j] == -1: # rojo
                     ax1.add_patch(patches.Rectangle((j,self.nrows - i -1), 1, 1, facecolor = "#cc0000"))
         self.reset()
        # plt.scatter(self.state[0] + 0.5, self.state[1] +0.5, s = 100, color = "black", marker = "o", facecolor = "blue", edgecolors = "blue", zorder = 10) 
-        for i in range(len(self.grid)):
-            for j in range(len(self.grid[0])):
-                if self.grid[i][j] == None:
+        for i in range(len(self.states)):
+            for j in range(len(self.states[0])):
+                if self.states[i][j] == None:
                     ax1.text(i+0.5, j+0.5, "", ha='center', va='center')
                 else:
                     ax1.text(j+0.5, self.nrows-i-1+0.5, str(round(values[i][j],2)), ha='center', va='center')

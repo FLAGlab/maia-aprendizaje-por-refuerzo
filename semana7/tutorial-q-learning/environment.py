@@ -15,20 +15,19 @@ class Environment:
                     self.states[i][j] = None
                 elif board[i][j] != ' ':
                     self.states[i][j] = int(board[i][j])
-        self.state = self.initial_state
+        self.current_state = self.initial_state
         self.actions = ['left', 'right', 'up', 'down']
         
     def get_states(self):
         return [(i, j) for i in range(self.nrows) for j in range(self.ncols)]
 
     def get_current_state(self):
-        return self.state
+        return self.current_state
 
     def get_possible_actions(self, state):
-        if not self.is_terminal(state):
-            return self.actions
-        else:
+        if self.is_terminal(state):
             return ['end']
+        return self.actions            
     
     def get_next_state(self, state, action):
         i, j = state
@@ -38,7 +37,7 @@ class Environment:
             reward = self.states[i][j]
             done = True
         elif action == 'left' and j > 0 and self.states[i][j-1] != None:
-            j -= 1
+            j -= 1  #(i,j) = noise(state, action)
         elif action == 'right' and j < self.ncols - 1 and self.states[i][j+1] != None:
             j += 1
         elif action == 'down' and i < self.nrows -1 and self.states[i+1][j] != None:
@@ -49,7 +48,7 @@ class Environment:
         return reward, self.state, done
 
     def do_action(self, action):
-        return self.get_next_state(self.state, action)
+        return self.get_next_state(self.current_state, action)
 
     def reset(self):
         self.state = self.initial_state

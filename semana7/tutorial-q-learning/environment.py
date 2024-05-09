@@ -44,14 +44,14 @@ class Environment:
             i += 1
         elif action == 'up' and i > 0 and self.states[i-1][j] != None:
             i -= 1
-        self.state = (i, j)
-        return reward, self.state, done
+        self.current_state = (i, j)
+        return reward, self.current_state, done
 
     def do_action(self, action):
         return self.get_next_state(self.current_state, action)
 
     def reset(self):
-        self.state = self.initial_state
+        self.current_state = self.initial_state
 
     def is_terminal(self, state):
         return self.states[state[0]][state[1]] != 0 and self.states[state[0]][state[1]] != None
@@ -133,4 +133,3 @@ class Environment:
                     ax1.text(j+0.5, self.nrows-i-1+0.25, text2, ha='center', va='center')
         plt.axis("off")
         plt.show() 
-

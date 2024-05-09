@@ -13,9 +13,11 @@ board = [['S', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
 ]
-env = Env.Gridworld(board)
-agent = Q.Agent(env, gamma=0.9, alpha=0.1, epsilon=0.9, episodes=1000)
+
+env = Env.Environment(board)
+agent = Q.Agent(env, gamma=0.9, alpha=0.1, epsilon=0.9, episodes=500)
 agent.run()
 actions, values = agent.actions_values()
-env.plot_action(actions, values)
+agent.save_qtable()
 print(values)
+print(agent.qtable)

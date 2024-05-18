@@ -17,8 +17,7 @@ class Agent:
         self.options = []  #[(o,n,a1a2a3…an), …(o,m,a1a2….am)]
         
     def __initdic__(self):
-        table = dict()
-            
+        table = dict()  
         # Initialize Q table with 0 for each state-action pair
         for state in self.environment.get_states():
             table[state] = {a:0 for a in self.environment.get_possible_actions(state)}

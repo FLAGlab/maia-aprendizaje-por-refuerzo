@@ -1,5 +1,5 @@
 import environment as Env
-import qlearning_agent_options as Q
+import agent_options as Q
 
 
 board = [
